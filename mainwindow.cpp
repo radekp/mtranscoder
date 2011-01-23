@@ -23,12 +23,12 @@ MainWindow::MainWindow(QWidget *parent) :
     if(profiles.count() == 0)
     {
         settings.beginGroup("profileLowQuality");
-        settings.setValue("params", "-sameq -f mpegts -acodec ac3 -ac 2 -ar 44100 -vcodec libx264 -vpre ultrafast");
+        settings.setValue("params", "-f mpegts -acodec ac3 -ac 2 -ar 44100 -vcodec libx264 -vpre fast -b 512k");
         settings.setValue("hq", false);
         settings.endGroup();
 
         settings.beginGroup("profileHighQuality");
-        settings.setValue("params", "-sameq -f mpegts -acodec ac3 -ac 2 -ar 44100 -vcodec libx264 -vpre slow");
+        settings.setValue("params", "-f mpegts -acodec ac3 -ac 2 -ar 44100 -vcodec libx264 -vpre medium -b 4000k");
         settings.setValue("hq", true);
         settings.endGroup();
 
@@ -123,7 +123,7 @@ void MainWindow::startProcess()
     {
         return;
     }
-    QString filename = queue.takeAt(0);
+    QString filename = queue.at(0);
     QString profile = ui->cbProfile->currentText();
     settings.beginGroup(profile);
     QString params = settings.value("params").toString();
@@ -208,6 +208,11 @@ void MainWindow::queueReadReady()
         return;
     }
 
+    if(queue.contains(line))
+    {
+        log("File already in queue " + line);
+        return;
+    }
     queue.append(line);
     log("Queing " + line);
     updateView();
