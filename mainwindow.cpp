@@ -83,7 +83,7 @@ void MainWindow::init()
         }
     }
 
-    QString queuePathStr = "/tmp/mtranscoder_queue";
+    QString queuePathStr = QDir::homePath() + "/.mtranscoder_queue";
     const char *queuePath = queuePathStr.toLatin1().constData();
     log("Opening queue at " + queuePathStr);
 
