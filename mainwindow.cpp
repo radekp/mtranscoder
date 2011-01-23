@@ -210,6 +210,7 @@ void MainWindow::queueReadReady()
 
     if(queue.contains(line))
     {
+        QTimer::singleShot(1000, this, SLOT(queueReadReady()));
         log("File already in queue " + line);
         return;
     }
