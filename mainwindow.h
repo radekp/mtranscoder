@@ -35,6 +35,7 @@ private:
     QString currFile;
     QSettings settings;
     QStringList profiles;
+    QString lastLog;
 
     void log(QString text);
     void updateView();

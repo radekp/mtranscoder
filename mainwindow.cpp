@@ -64,6 +64,8 @@ MainWindow::~MainWindow()
 void MainWindow::log(QString text)
 {
     ui->tbLog->append(text);
+    lastLog.append(text);
+    lastLog.append("\n");
 }
 
 void MainWindow::init()
@@ -185,8 +187,11 @@ void MainWindow::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
     if(exitCode == 0 && exitStatus == QProcess::NormalExit)
     {
         QString dst = currFile.left(currFile.lastIndexOf(".part"));
+        log(currFile + "->" + dst);
         QFile::rename(currFile, dst);
     }
+    ui->tbLog->setPlainText(lastLog);
+    lastLog = "";
 
     if(queue.count() > 0)
     {
