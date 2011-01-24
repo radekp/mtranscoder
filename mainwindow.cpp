@@ -53,12 +53,21 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    delete ui;
     if(queueFd >= 0)
     {
         ::close(queueFd);
         queueFd = -1;
     }
+    if(process.state() != QProcess::NotRunning)
+    {
+        process.terminate();
+        process.waitForFinished(1000);
+    }
+    if(process.state() != QProcess::NotRunning)
+    {
+        process.kill();
+    }
+    delete ui;
 }
 
 void MainWindow::log(QString text)
@@ -178,6 +187,7 @@ void MainWindow::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
     {
         QString dst = currFile.left(currFile.lastIndexOf(".part"));
         log(currFile + "->" + dst);
+        QFile::remove(dst);
         QFile::rename(currFile, dst);
     }
     ui->tbLog->setPlainText(lastLog);
