@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
         queue(),
         currFile(),
         process(this),
-        settings("radekp", "mtranscoder"),
+        settings("mtranscoder", "mtranscoder"),
         profiles()
 {
     ui->setupUi(this);
@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
         settings.endGroup();
 
         sync();
-        profiles = settings.allKeys();
+        profiles = settings.childGroups();
     }
 
     for(int i = profiles.count() - 1; i >= 0 && profiles.count() > 0 ; )

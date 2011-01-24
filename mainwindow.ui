@@ -49,13 +49,6 @@
      <widget class="QListWidget" name="lwQueue"/>
     </item>
     <item>
-     <widget class="QProgressBar" name="pbEnc">
-      <property name="value">
-       <number>0</number>
-      </property>
-     </widget>
-    </item>
-    <item>
      <widget class="QTextBrowser" name="tbLog">
       <property name="html">
        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
