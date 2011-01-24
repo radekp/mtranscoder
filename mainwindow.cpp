@@ -130,6 +130,7 @@ void MainWindow::startProcess()
     settings.beginGroup(profile);
     QString params = settings.value("params").toString();
     bool hq = settings.value("hq").toBool();
+    settings.endGroup();
 
     QStringList args = params.split(' ');
     args.prepend(filename);
@@ -164,20 +165,6 @@ void MainWindow::processReadyRead()
 {
     QString txt = process.readAll().trimmed();
     log(txt);
-
-    // Search for percents - e.g. (34%)
-    int index = txt.indexOf("%)");
-    if(index < 5)
-    {
-        return;
-    }
-    int startIndex = txt.indexOf('(', index - 5) + 1;
-    if(startIndex <= 0)
-    {
-        return;
-    }
-    QString numStr = txt.mid(startIndex, index - startIndex);
-    ui->pbEnc->setValue(numStr.toInt());
 }
 
 void MainWindow::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
