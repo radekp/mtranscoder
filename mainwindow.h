@@ -9,6 +9,7 @@
 #include <QProcess>
 #include <QSettings>
 #include <QMessageBox>
+#include <QScrollBar>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>

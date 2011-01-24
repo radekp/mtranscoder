@@ -64,6 +64,9 @@ MainWindow::~MainWindow()
 void MainWindow::log(QString text)
 {
     ui->tbLog->append(text);
+    QScrollBar *sb = ui->tbLog->verticalScrollBar();
+    sb->setValue(sb->maximum());
+
     lastLog.append(text);
     lastLog.append("\n");
 }
