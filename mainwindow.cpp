@@ -138,24 +138,35 @@ void MainWindow::startProcess()
         return;
     }
     QString filename = queue.at(0);
+
     QString profile = ui->cbProfile->currentText();
     settings.beginGroup(profile);
     QString params = settings.value("params").toString();
     bool hq = settings.value("hq").toBool();
     settings.endGroup();
 
+    QString dst;
+    if(hq)
+    {
+        dst = QDir::homePath() + "/.mtranscoder/hq/" + filename;
+    }
+    else
+    {
+        dst = QDir::homePath() + "/.mtranscoder/lq/" + filename;
+    }
+    if(QFile::exists(dst))
+    {
+        log(dst + " is already encoded in current quality");
+        queue.removeAt(0);
+        updateView();
+        return;
+    }
+
     QStringList args = params.split(' ');
     args.prepend(filename);
     args.prepend("-i");
 
-    if(hq)
-    {
-        currFile = QDir::homePath() + "/.mtranscoder/hq/" + filename + ".part";
-    }
-    else
-    {
-        currFile = QDir::homePath() + "/.mtranscoder/lq/" + filename + ".part";
-    }
+    currFile = dst + ".part";
     args << currFile;
 
     QString outDir = currFile.left(currFile.lastIndexOf('/'));
