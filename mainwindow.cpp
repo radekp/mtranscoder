@@ -22,14 +22,34 @@ MainWindow::MainWindow(QWidget *parent) :
     QStringList profiles = settings.childGroups();
     if(profiles.count() == 0)
     {
-        settings.beginGroup("profileLowQuality");
+        settings.beginGroup("profileH264LowQuality");
         settings.setValue("params", "-f mpegts -acodec ac3 -ac 2 -ar 44100 -vcodec libx264 -vpre fast -b 512k");
         settings.setValue("hq", false);
         settings.endGroup();
 
-        settings.beginGroup("profileHighQuality");
+        settings.beginGroup("profileH264HighQuality");
         settings.setValue("params", "-f mpegts -acodec ac3 -ac 2 -ar 44100 -vcodec libx264 -vpre medium -b 4000k");
         settings.setValue("hq", true);
+        settings.endGroup();
+
+        settings.beginGroup("profileMpeg2LowQuality");
+        settings.setValue("params", "-f mpegts -acodec ac3 -ac 2 -ar 44100 -vcodec mpeg2video -b 512k");
+        settings.setValue("hq", false);
+        settings.endGroup();
+
+        settings.beginGroup("profileMpeg2HighQuality");
+        settings.setValue("params", "-f mpegts -acodec ac3 -ac 2 -ar 44100 -vcodec mpeg2video -b 4000k");
+        settings.setValue("hq", false);
+        settings.endGroup();
+
+        settings.beginGroup("profileMpeg2HighQualitySrc5x2Dst640x360");
+        settings.setValue("params", "-f mpegts -acodec ac3 -ac 2 -ar 44100 -vcodec mpeg2video -b 4000k -vf pad=640:360:0:52:black");
+        settings.setValue("hq", false);
+        settings.endGroup();
+
+        settings.beginGroup("profileMpeg2HighQualitySrc12x5Dst576x324");
+        settings.setValue("params", "-f mpegts -acodec ac3 -ac 2 -ar 44100 -vcodec mpeg2video -b 4000k -vf pad=576:324:0:42:black");
+        settings.setValue("hq", false);
         settings.endGroup();
 
         sync();
@@ -166,7 +186,7 @@ void MainWindow::startProcess()
     args.prepend(filename);
     args.prepend("-i");
 
-    currFile = dst + ".part";
+    currFile = dst + ".mpg.part";
     args << currFile;
 
     QString outDir = currFile.left(currFile.lastIndexOf('/'));
